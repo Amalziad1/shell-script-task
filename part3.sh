@@ -1,16 +1,19 @@
 #!/bin/bash
-#part 3
 
+printError() {
+    echo "Error: missed arguments" 
+    exit 1
+}
 display_help() {
     echo "Usage: $0 [OPTIONS]"
     echo "  -f   First name"
     echo "  -l   Last name"
-    echo "  -cap Capitalize the first letter of the first and last name"
-    echo "  -h   Display this help message"
+    echo "  [ -cap Capitalize the first letter of the first and last name ]" 
+    echo "   -h   Display this help message"
     exit 1
 }
 
-#parsing command-line arguments
+# Parse command-line arguments
 capitalize=false
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -23,16 +26,23 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-#capitalize the first letter of the names if needed
+if [ $first_name="" ]
+then
+    printError
+elif [ $last_name="" ]
+then 
+    printError
+fi
+# Capitalize if needed
 if [ "$capitalize"=true ]; then
     first_name="$(tr '[:lower:]' '[:upper:]' <<< ${first_name:0:1})${first_name:1}"
     last_name="$(tr '[:lower:]' '[:upper:]' <<< ${last_name:0:1})${last_name:1}"
 fi
 
-
+# Variables
 tmp_dir="$HOME/amal/part3_exec"
 
-#create directories and files
+# Create directories and files
 mkdir -p "$tmp_dir"
 for i in {1..5}; do
     subdir="$tmp_dir/training_project_$i"
